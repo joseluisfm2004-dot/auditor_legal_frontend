@@ -148,7 +148,8 @@
                     <span :class="['badge', c.estado]">{{ c.estado }}</span>
                   </td>
                   <td class="action-buttons-cell">
-                    <button @click="procesarContrato(c.id)" class="action-btn segment-btn" title="Segmentar cláusulas">
+                    <!-- BOTÓN CORREGIDO AQUÍ -->
+                    <button type="button" @click.prevent="procesarContrato(c.id)" class="action-btn segment-btn" title="Segmentar cláusulas">
                       Segmentar
                     </button>
                     <button @click="auditarContrato(c.id)" :disabled="auditando" class="action-btn audit-btn" title="Ejecutar Auditoría con Azure OpenAI">
@@ -504,6 +505,7 @@ const subirContrato = async () => {
 };
 
 
+// FUNCIÓN CORREGIDA CON EL MENSAJE DE ÉXITO
 const procesarContrato = async (id) => {
   try {
     contratoSeleccionadoId.value = id;
@@ -512,6 +514,10 @@ const procesarContrato = async (id) => {
     });
     clausulas.value = response.data;
     await cargarContratos();
+    
+    // Alerta de éxito agregada aquí
+    alert("¡Éxito! El contrato ha sido segmentado en cláusulas y guardado en la base de datos.");
+    
   } catch (err) {
     console.error("Error en segmentación:", err);
     alert('Error al segmentar el contrato. Verifique que el archivo PDF contenga texto estructurado.');
